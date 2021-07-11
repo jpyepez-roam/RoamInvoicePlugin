@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "prettier": "2.3.2"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.8.0"
+  }
+}

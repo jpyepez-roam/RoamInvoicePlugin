@@ -1,3 +1,3 @@
 # Roam Invoice Plugin
 
-Manager assistant to convert invoice page hours to days.
+Productive app assistant to convert invoice page hours to days.

@@ -1,4 +1,5 @@
 // Selectors
+const TABLE_WRAPPER = '.data-table__wrapper'
 const INVOICE_ROW = 'div.invoice-line-items-table__row'
 const UNIT_FIELD = '.invoice-line-items-table-form-row__unit-field'
 const UNIT_BUTTON = 'button.form-select-field-2__trigger'

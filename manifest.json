@@ -27,5 +27,9 @@
             "background.js"
         ]
     },
-    "web_accessible_resources": ["template.html"]
+    "web_accessible_resources": [
+        "template.html",
+        "status_success.html",
+        "status_warning.html"
+    ]
 }

@@ -2,8 +2,12 @@ class InvoiceAssistant {
     invoiceState = []
     prevInvoiceTotal = ''
     newInvoiceTotal = ''
+    conversionSuccessful = null
+    invoiceContainer
 
-    constructor() {}
+    constructor(invoiceContainer) {
+        this.invoiceContainer = invoiceContainer
+    }
 
     getData = () => {
         this.invoiceState = []
@@ -72,14 +76,21 @@ class InvoiceAssistant {
             }, idx * 75)
         })
 
+        // conversion success check (total is unchanged)
         setTimeout(() => {
             const invoiceTotal = document.querySelector(
                 `${INVOICE_TOTAL} > label`
             )
             this.newInvoiceTotal = invoiceTotal.textContent.trim()
 
-            console.log(this.invoiceState.length)
-            console.log(this.prevInvoiceTotal, this.newInvoiceTotal)
+            this.conversionSuccessful =
+                this.newInvoiceTotal === this.prevInvoiceTotal
+
+            this.invoiceContainer.dispatchEvent(
+                new CustomEvent('invoice-updated', {
+                    detail: this.conversionSuccessful,
+                })
+            )
         }, this.invoiceState.length * 75)
     }
 }

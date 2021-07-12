@@ -1,0 +1,30 @@
+.roam-assistant--wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+    background-color: #f4f4f4;
+}
+
+.roam-assistant--wrapper > p {
+    color: #999;
+}
+
+.roam-assistant--wrapper > p span {
+    text-transform: uppercase;
+}
+
+.roam-assistant--button {
+    padding: 0.125rem 1rem;
+    color: #e36538;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: solid 1px #e36538;
+    border-radius: 5px;
+    flex-basis: 25%;
+    text-align: center;
+}
+
+.roam-assistant--button:hover {
+    text-decoration: underline;
+}

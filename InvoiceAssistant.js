@@ -1,5 +1,7 @@
 class InvoiceAssistant {
     invoiceState = []
+    prevInvoiceTotal = ''
+    newInvoiceTotal = ''
 
     constructor() {}
 
@@ -21,6 +23,9 @@ class InvoiceAssistant {
 
             this.invoiceState.push({ id, unitValue, qtyValue, rateValue })
         })
+
+        const invoiceTotal = document.querySelector(`${INVOICE_TOTAL} > label`)
+        this.prevInvoiceTotal = invoiceTotal.textContent.trim()
     }
 
     updatePage = () => {
@@ -28,6 +33,8 @@ class InvoiceAssistant {
             setTimeout(() => {
                 if (/hour/i.test(item.unitValue.trim())) {
                     const row = document.getElementById(item.id)
+
+                    // update units
                     const unitButton = row.querySelector(
                         `${UNIT_FIELD} > ${UNIT_BUTTON}`
                     )
@@ -42,13 +49,37 @@ class InvoiceAssistant {
                         }
                     })
 
+                    // update quantity
                     const qtyInput = row.querySelector(`${QTY_FIELD} input`)
                     qtyInput.value = +item.qtyValue / 8.0
+                    qtyInput.dispatchEvent(
+                        new Event('input', {
+                            bubbles: false,
+                            cancelable: false,
+                        })
+                    )
 
+                    // update rate
                     const rateInput = row.querySelector(`${RATE_FIELD} input`)
-                    rateInput.value = +item.rateValue * 8.0
+                    rateInput.value = (+item.rateValue * 8.0).toFixed(2)
+                    rateInput.dispatchEvent(
+                        new Event('input', {
+                            bubbles: false,
+                            cancelable: false,
+                        })
+                    )
                 }
             }, idx * 75)
         })
+
+        setTimeout(() => {
+            const invoiceTotal = document.querySelector(
+                `${INVOICE_TOTAL} > label`
+            )
+            this.newInvoiceTotal = invoiceTotal.textContent.trim()
+
+            console.log(this.invoiceState.length)
+            console.log(this.prevInvoiceTotal, this.newInvoiceTotal)
+        }, this.invoiceState.length * 75)
     }
 }

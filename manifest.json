@@ -30,6 +30,7 @@
     "web_accessible_resources": [
         "template.html",
         "status_success.html",
-        "status_warning.html"
+        "status_warning.html",
+        "icons/close_icon.svg"
     ]
 }

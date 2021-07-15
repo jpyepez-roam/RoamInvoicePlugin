@@ -31,6 +31,9 @@
 
 .roam-assistant__status--success {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.25rem 2rem;
     background-color: #ddf4dd;
 }
@@ -39,14 +42,25 @@
     color: #339753;
 }
 
+.roam-assistant__status--success svg {
+    fill: #339753;
+}
+
 .roam-assistant__status--warning {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0.25rem 2rem;
     background-color: #fff2cc;
 }
 
 .roam-assistant__status--warning p {
     color: #f57c00;
+}
+
+.roam-assistant__status--warning svg {
+    fill: #f57c00;
 }
 
 .roam-assistant__status--success p span,

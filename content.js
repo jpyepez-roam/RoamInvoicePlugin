@@ -1,38 +1,70 @@
-const injectAssistant = async (container) => {
+let tableWrapper
+
+const injectAssistant = async () => {
     // add template
-    const res = await fetch(chrome.runtime.getURL('/template.html'))
+    const res = await fetch(browser.runtime.getURL('/template.html'))
     const html = await res.text()
-    container.insertAdjacentHTML('afterbegin', html)
+    tableWrapper.insertAdjacentHTML('afterbegin', html)
 
     // add button listener
-    const invoiceAssistant = new InvoiceAssistant(container)
-    const goButton = document.getElementById('roam-convert-go')
+    const invoiceAssistant = new InvoiceAssistant(tableWrapper)
+    const goButton = tableWrapper.querySelector(ROAM_CONVERT_GO)
     goButton.addEventListener('click', () => {
         invoiceAssistant.getData()
         invoiceAssistant.updatePage()
     })
 }
 
-const displayResult = async (container, status) => {
+const displayResult = async (status) => {
     // add template
     const statusTemplate = status
         ? '/status_success.html'
         : '/status_warning.html'
-    const res = await fetch(chrome.runtime.getURL(statusTemplate))
+    const res = await fetch(browser.runtime.getURL(statusTemplate))
     const html = await res.text()
-    container.insertAdjacentHTML('beforeend', html)
+    tableWrapper.insertAdjacentHTML('beforeend', html)
+
+    const bannerType = status ? 'success' : 'warning'
+    const banner = tableWrapper.querySelector(
+        `.roam-assistant__status--${bannerType}`
+    )
+    const button = banner.querySelector('.roam-assistant__status--close')
+    button.addEventListener('click', () => banner.remove())
 }
 
-let isInit = false
+const clearBanners = () => {
+    const successBanner = tableWrapper.querySelector(
+        `.roam-assistant__status--success`
+    )
+    if (successBanner) successBanner.remove()
+
+    const warningBanner = tableWrapper.querySelector(
+        `.roam-assistant__status--warning`
+    )
+    if (warningBanner) warningBanner.remove()
+}
+
+const updateCallback = (event) => {
+    clearBanners()
+    displayResult(event.detail)
+}
+
+const resetWrapper = () => {
+    const assistant = tableWrapper.querySelector(ROAM_ASSISTANT_WRAPPER)
+    if (assistant) {
+        tableWrapper.removeEventListener('invoice-updated', updateCallback)
+        assistant.remove()
+    }
+    clearBanners()
+}
 
 browser.runtime.onMessage.addListener(async () => {
-    const tableWrapper = document.querySelector(TABLE_WRAPPER)
+    tableWrapper = document.querySelector(TABLE_WRAPPER)
 
-    if (tableWrapper && !isInit) {
-        injectAssistant(tableWrapper)
+    if (tableWrapper) {
+        resetWrapper()
+        injectAssistant()
         isInit = true
-        tableWrapper.addEventListener('invoice-updated', (event) => {
-            displayResult(tableWrapper, event.detail)
-        })
+        tableWrapper.addEventListener('invoice-updated', updateCallback)
     }
 })
